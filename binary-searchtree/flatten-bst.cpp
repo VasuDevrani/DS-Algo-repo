@@ -33,32 +33,6 @@ node*buildTree()
     return root;
 }
 
-void bfs(node*root)
-{
-    if(root==NULL)
-    return;
-
-    queue<node*>q;
-    q.push(root);
-
-    while(!q.empty())
-    {
-        node*temp=q.front();
-        q.pop();
-        cout<<temp->d<<" ";
-        if(temp->left)  //if temp->left is not NULL
-        {
-            q.push(temp->left);
-        }
-        if(temp->right)
-        {
-            q.push(temp->right);
-        }
-
-    }
-    return;
-}
-
 void bfs_ladder(node*root)
 {
     queue<node*>q;
@@ -88,13 +62,41 @@ void bfs_ladder(node*root)
     }
 }
 
+void insertAtEnd(node*&list,int d)
+{
+    if(list==NULL)
+    {
+        list=new node(d);
+        return;
+    }
+    node*tail=list;
+    while(tail->right!=NULL)
+    tail=tail->right;
+
+    node*temp=new node(d);
+    tail->right=temp;
+}
+
+void flatten_tree(node*root,node*&list)
+{
+    // base case
+    if(root==NULL)
+    return;
+    // recursive case
+    flatten_tree(root->left,list);
+    insertAtEnd(list,root->d);
+    flatten_tree(root->right,list);
+}
+
 int main ()
 {
     node*root=buildTree();
-    bfs(root);
-    cout<<endl;
     bfs_ladder(root);
+    cout<<endl;
+
+    node*list=NULL;
+    flatten_tree(root,list);
+    bfs_ladder(list);
 
     return 0;
 }
-
