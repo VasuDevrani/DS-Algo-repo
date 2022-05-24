@@ -111,8 +111,10 @@ void deleteMid(node*head, int p)
 {
     if(head==NULL)
     return;
+
     if(head->next==NULL)
     deleteHead(head);
+    
     node*temp=head;
     for(int i=2;i<p;i++)
     {
