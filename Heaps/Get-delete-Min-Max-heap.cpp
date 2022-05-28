@@ -36,6 +36,7 @@ class Heap{
         minHeap=type;
         v.push_back(-1);  //v[0]=-1(blocked)
     }
+    
     //insert function
     void push(int data){
         v.push_back(data);

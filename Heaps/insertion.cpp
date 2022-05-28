@@ -13,7 +13,7 @@ class Heap{
 
         this->minHeap=minHeap;
     }
-
+    
     bool compare(int parent,int child)
     {
         if(minHeap)
@@ -21,6 +21,7 @@ class Heap{
         else
         return parent<child;
     }
+
     void push(int d)
     {
         v.push_back(d);

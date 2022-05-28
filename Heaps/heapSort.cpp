@@ -1,4 +1,6 @@
-// time complexity being o(nlogn)
+// time complexity being O(n) + (nlogn) one due to build heap method and nlogn due to heapify for each element 
+// Heap sort
+// this sorting technique involves heapification of array and then sending the top max or min element to the end via swap
 
 #include<bits/stdc++.h>
 using namespace std;
@@ -37,15 +39,31 @@ class Heap{
         }
     }
 
-    void heapify(int i)
+    void heapifySort(vector<int>&arr,int i,int n)
     {
         int left=2*i;
         int right=2*i+1;
         int minIndex=i;
-        if(left<v.size() && compare(v[i],v[left])){
+        if(left<n && compare(arr[i],arr[left])){
             minIndex=left;
         }
-        if(right<v.size() && compare(v[minIndex],v[right])){   
+        if(right<n && compare(arr[minIndex],arr[right])){   
+            minIndex=right;
+        }
+        if(minIndex!=i){
+            swap(arr[i],arr[minIndex]);
+            heapifySort(arr,minIndex,n);
+        }
+    }
+
+    void heapify(int i){
+        int left=2*i;
+        int right=2*i+1;
+        int minIndex=i;
+        if(left<v.size() && compare(v[left],v[i])){
+            minIndex=left;
+        }
+        if(right<v.size() && compare(v[right],v[minIndex])){   
             minIndex=right;
         }
         if(minIndex!=i){
@@ -93,11 +111,26 @@ class Heap{
             heapifyNew(vec,i);
         }
     }
+
+    void heapSort(vector<int>&arr)
+    {
+        int n=arr.size();
+        buildHeap_better(arr);
+
+        while(n>1)
+        {
+            swap(arr[1],arr[n-1]);
+            n--;
+            heapifySort(arr,1,n);
+        }
+    }
 };
 
 int main ()
 {
-    Heap h1(false);
+    // true gives decreasing order of elements
+    // false gives increasing order of elements
+    Heap h1(true);
     
     int x;
     for(int i=0;i<9;i++)
@@ -106,13 +139,11 @@ int main ()
         h1.push(x);
     }
 
-    cout<<h1.top()<<endl;
-    while(!h1.empty())
-    {
-        cout<<h1.top()<<" ";
-        h1.pop();
-    }
+    vector<int>arr={-1,10,20,5,6,1,2,3,4};
+    h1.heapSort(arr);
 
+    for(int i=0;i<arr.size();i++)
+    cout<<arr[i]<<" ";
    
     return 0;
 }
