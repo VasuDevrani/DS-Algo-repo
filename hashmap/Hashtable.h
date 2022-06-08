@@ -42,6 +42,55 @@ class Hashtable{
         return ind; 
     }
 
+    void rehash()
+    {
+        // store the old table
+        Node<T>**oldTable = table;
+        int oldTableSize = table_size;
+        // iniitialize the table data member to a new larger size table in order to be able to use defined functions like insert...
+        table_size = 2*table_size;
+        table = new Node<T>*[table_size];
+        current_size = 0;
+        
+        for(int i=0;i<table_size;i++)
+        {
+            table[i]=NULL;
+        }
+
+        for(int i=0;i<oldTableSize;i++)
+        {
+            Node<T>*head = oldTable[i];
+            while(head!=NULL)
+            {
+                insert(head->key, head->val);
+                head = head->next;
+            }
+            if(oldTable[i]!=NULL)
+                delete oldTable[i];
+        }
+        delete [] oldTable;
+    }
+
+    Node<T>* deleteAtHead(Node<T>*head)
+    {
+        if(head==NULL)
+        return NULL;
+        Node<T>*newHead = head->next;
+        delete(head);
+        // head = newHead;
+        return newHead;
+    }
+    void deleteAtEnd(Node<T>*head)
+    {
+        // Node<T>*tail = head;
+
+    }
+    void deleteAtMid(Node<T>*head)
+    {
+        // Node<T>*tail = head;
+
+    }
+
     public:
     Hashtable(int ts=7){
         this->table_size=ts;
@@ -68,15 +117,28 @@ class Hashtable{
         table[ind] = head;
         current_size++;
 
-        // rehashing is done to prevent the overincreament in size of linked list at each index
+        // rehashing is done to prevent the overincreament in size of linked list at each index with time complexity O(n)
         // else the complexity of search function is gonna exceed O(1)
+        // Rehashing reduces the collision frequency as well
 
+        if(current_size/table_size>0.7)
+            rehash();
     }
 
-    // T search(string key)
-    // {
+//  here the return type of function is taken as a pointer of T type because if key is not present in the Table, we can't return -1 or no or something else as T is not fixed....
+// So we return a NULL in that case
+    T*search(string key)
+    {
+        int ind = Hashfn(key);
+        Node<T>*temp = table[ind];
 
-    // }
+        while(temp!=NULL)
+        {
+            if(temp->key == key)
+            return &temp->val;
+        }
+        return NULL;
+    }
 
     void print()
     {
@@ -91,6 +153,32 @@ class Hashtable{
                 temp=temp->next;
             }
             cout<<endl;
+        }
+    }
+
+    void erase(string key)
+    {
+        int ind = Hashfn(key);
+        Node<T>*temp = table[ind];
+
+        if(temp->key == key)
+            {
+                table[ind] = deleteAtHead(temp);
+                return;
+            }
+        temp = temp->next;
+        while(temp!=NULL)
+        {
+            if(temp->key == key && temp->next == NULL)
+            {
+                deleteAtEnd(temp);
+                return;
+            }
+            else if(temp->key == key)
+            {
+                deleteAtMid(temp);
+                return;
+            }
         }
     }
 };
