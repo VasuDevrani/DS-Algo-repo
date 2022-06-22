@@ -64,7 +64,7 @@ void bfs_ladder(node*root)
     queue<node*>q;
     q.push(root);
     q.push(NULL);
-
+ 
     while(!q.empty())
     {
         if(q.front()!=NULL){

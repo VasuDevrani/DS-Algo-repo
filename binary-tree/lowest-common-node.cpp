@@ -44,7 +44,7 @@ node*find_lca(int a,int b,node*root)
 
     if(lans!=NULL && rans!=NULL)
     return root;
-
+    
     if(lans!=NULL)
     return lans;
 

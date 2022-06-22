@@ -70,6 +70,5 @@ int main ()
 
     cout<<q1.front()<<endl;
 
-
     return 0;
 }

@@ -23,8 +23,6 @@ void sortedInsert(stack<int>&s,int d)
         sortedInsert(s,d);
         s.push(temp);
     }
-
-
 }
 
 void sort(stack<int>&s)
